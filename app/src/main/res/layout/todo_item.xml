@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/todo_item"
+    >
+
+    <CheckBox
+        android:id="@+id/todo_CheckBox"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/todo_TextViewTask"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:textSize="20dp" />
+
+    <ImageButton
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/todo_edit"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/todo_btnEdit"
+        android:layout_margin="5dp"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/todo_delete"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/todo_btnDelete"
+        android:layout_margin="5dp"/>
+
+</LinearLayout>
