@@ -5,11 +5,14 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Switch
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.cookandroid.diary_recyclerview.databinding.TodoActivityMainBinding
 import java.time.LocalDate
@@ -18,9 +21,8 @@ import java.time.format.DateTimeFormatter
 class TodoActivity : AppCompatActivity() {
     private lateinit var btnAdd: ImageView
     private lateinit var completedSwitch : Switch
-    /*private lateinit var
-    private lateinit var
-    private lateinit var*/
+
+    private val dbHelper = DBHelper(this)
 
     private val binding: TodoActivityMainBinding by lazy { TodoActivityMainBinding.inflate(layoutInflater) }
 
@@ -40,83 +42,75 @@ class TodoActivity : AppCompatActivity() {
         }
 
         btnAdd.setOnClickListener {
-            var intent = Intent(applicationContext, AddTodoActivity::class.java)
-            startActivity(intent)
+            val addIntent = Intent(this, AddTodoActivity::class.java)
+            addIntent.putExtra("mode", "add")
+            startActivity(addIntent)
         }
 
+        // 카드뷰에 나타날 날짜 형식
+        val cardViewFormatter = DateTimeFormatter.ofPattern("MM/dd(EEE)")
+
+        // 날짜 범위 계산
+        val currentDate = LocalDate.now()
+        val tomorrowDate = currentDate.plusDays(1)
+        val futureStartDate = currentDate.plusDays(2) // 오늘로부터 2일 이상 이후
+        val pastEndDate = currentDate.minusDays(1) // 오늘 이전
 
         // 날짜 형식 지정
-        val formatter = DateTimeFormatter.ofPattern("MM/dd(EEE)")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
 
         // 오늘 날짜를 TextView에 설정
         val todayDateTextView: TextView = findViewById(R.id.todayDateTextView)
-        val currentDate = LocalDate.now() //오늘 날짜 계산
-        todayDateTextView.text = currentDate.format(formatter)
+        todayDateTextView.text = currentDate.format(cardViewFormatter)
 
         // 내일 날짜를 TextView에 설정
         val tomorrowTextView: TextView = findViewById(R.id.tomorrowDateTextView)
-        val tomorrowDate = currentDate.plusDays(1) // 내일 날짜 계산
-        tomorrowTextView.text = tomorrowDate.format(formatter)
+        tomorrowTextView.text = tomorrowDate.format(cardViewFormatter)
 
         val todoLinearLayout1 = binding.todoLinearLayout1
         val todoLinearLayout2 = binding.todoLinearLayout2
         val todoLinearLayout3 = binding.todoLinearLayout3
         val todoLinearLayout4 = binding.todoLinearLayout4
 
-        // 데이터베이스 연결 해야 할 부분
-        val todoItems1 = listOf(
-            TodoItem("2023-11-24","할 일 1 카드 1", false),
-            TodoItem("2023-11-24","할 일 2 카드 1", false)
-        )
 
-        val todoItems2 = listOf(
-            TodoItem("2023-11-24","할 일 1 카드 2", false),
-            TodoItem("2023-11-24","할 일 2 카드 2", false)
-        )
+        var todayTodoItem: MutableList<TodoItem> = dbHelper.getTodoItemsByDateRange(currentDate.format(formatter), currentDate.format(formatter))
+        var tomorrowTodoItem: MutableList<TodoItem> = dbHelper.getTodoItemsByDateRange(tomorrowDate.format(formatter), tomorrowDate.format(formatter))
+        var futureTodoItem: MutableList<TodoItem> = dbHelper.getTodoItemsByDateRange(futureStartDate.format(formatter), "9999-12-31") // 이후 모든 날짜
+        var pastTodoItem: MutableList<TodoItem> = dbHelper.getTodoItemsByDateRange("0001-01-01", pastEndDate.format(formatter)) // 과거 모든 날짜
 
-        val todoItems3 = listOf(
-            TodoItem("2023-11-24","할 일 1 카드 3", false),
-            TodoItem("2023-11-24","할 일 2 카드 3", false)
-        )
 
-        val todoItems4 = listOf(
-            TodoItem("2023-11-24","할 일 1 카드 4", false),
-            TodoItem("2023-11-24","할 일 2 카드 4", false),
-            TodoItem("2023-11-24","할 일 2 카드 4", false),
-            TodoItem("2023-11-24","할 일 2 카드 4", false)
-        )
+        setupToggleView(binding.layoutBtn01, binding.layoutDetail01, binding.layoutBtn01, todoLinearLayout1, todayTodoItem)
+        setupToggleView(binding.layout01, binding.layoutDetail01, binding.layoutBtn01, todoLinearLayout1, todayTodoItem)
 
-        setupToggleView(binding.layoutBtn01, binding.layoutDetail01, binding.layoutBtn01, todoLinearLayout1, todoItems1)
-        setupToggleView(binding.layout01, binding.layoutDetail01, binding.layoutBtn01, todoLinearLayout1, todoItems1)
+        setupToggleView(binding.layoutBtn02, binding.layoutDetail02, binding.layoutBtn02, todoLinearLayout2, tomorrowTodoItem)
+        setupToggleView(binding.layout02, binding.layoutDetail02, binding.layoutBtn02, todoLinearLayout2, tomorrowTodoItem)
 
-        setupToggleView(binding.layoutBtn02, binding.layoutDetail02, binding.layoutBtn02, todoLinearLayout2, todoItems2)
-        setupToggleView(binding.layout02, binding.layoutDetail02, binding.layoutBtn02, todoLinearLayout2, todoItems2)
+        setupToggleView(binding.layoutBtn03, binding.layoutDetail03, binding.layoutBtn03, todoLinearLayout3, futureTodoItem)
+        setupToggleView(binding.layout03, binding.layoutDetail03, binding.layoutBtn03, todoLinearLayout3, futureTodoItem)
 
-        setupToggleView(binding.layoutBtn03, binding.layoutDetail03, binding.layoutBtn03, todoLinearLayout3, todoItems3)
-        setupToggleView(binding.layout03, binding.layoutDetail03, binding.layoutBtn03, todoLinearLayout3, todoItems3)
-
-        setupToggleView(binding.layoutBtn04, binding.layoutDetail04, binding.layoutBtn04, todoLinearLayout4, todoItems4)
-        setupToggleView(binding.layout04, binding.layoutDetail04, binding.layoutBtn04, todoLinearLayout4, todoItems4)
+        setupToggleView(binding.layoutBtn04, binding.layoutDetail04, binding.layoutBtn04, todoLinearLayout4, pastTodoItem)
+        setupToggleView(binding.layout04, binding.layoutDetail04, binding.layoutBtn04, todoLinearLayout4, pastTodoItem)
     }
 
     private fun setupToggleView(
         triggerView: View,
         detailLayout: View,
-        rotationView: View,
+        rotationBtn: ImageButton,
         linearLayout: LinearLayout,
-        todoItems: List<TodoItem>
+        todoItems: MutableList<TodoItem>
     ) {
         triggerView.setOnClickListener {
             if (detailLayout.visibility == View.VISIBLE) {
                 detailLayout.visibility = View.GONE
-                rotationView.animate().apply {
+                rotationBtn.animate().apply {
                     duration = 300
                     rotation(0f)
                 }
                 linearLayout.removeAllViews()
             } else {
                 detailLayout.visibility = View.VISIBLE
-                rotationView.animate().apply {
+                rotationBtn.animate().apply {
                     duration = 300
                     rotation(90f)
                 }
@@ -125,29 +119,81 @@ class TodoActivity : AppCompatActivity() {
         }
     }
 
-    private fun openTodoItems(linearLayout: LinearLayout, todoItems: List<TodoItem>) {
+    private fun openTodoItems(linearLayout: LinearLayout, todoItems: MutableList<TodoItem>) {
         val layoutInflater = LayoutInflater.from(this)
+
 
         for (item in todoItems) {
             val todoView = layoutInflater.inflate(R.layout.todo_item, null)
-            val contentTextView = todoView.findViewById<TextView>(R.id.todo_TextViewTask)
+            val dueDateTextView = todoView.findViewById<TextView>(R.id.todo_DueDateTextView)
+            val taskTextView = todoView.findViewById<TextView>(R.id.todo_TextViewTask)
             val checkBox = todoView.findViewById<CheckBox>(R.id.todo_CheckBox)
+            val btnEdit = todoView.findViewById<ImageButton>(R.id.todo_btnEdit)
+            val btnDelete = todoView.findViewById<ImageButton>(R.id.todo_btnDelete)
+            val itemId = item.id  // 해당 항목의 ID를 얻어옴
 
-            contentTextView.text = item.content
+            taskTextView.text = item.task
+            checkBox.isChecked = item.completion
+            dueDateTextView.text = item.date
+            linearLayout.addView(todoView)
 
-            checkBox.isChecked = item.isChecked
+            // 초기 체크 상태에 따라 가운데 줄 설정
+            updateTextViewDecoration(taskTextView, checkBox.isChecked)
 
             // 체크 박스의 상태가 변경될 때의 리스너 설정
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    // 체크될 때 가운데 줄 추가
-                    contentTextView.paintFlags = contentTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                } else {
-                    // 체크가 해제될 때 가운데 줄 제거
-                    contentTextView.paintFlags = contentTextView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                }
+            checkBox.setOnCheckedChangeListener { _, completion ->
+                // 체크 상태에 따라 가운데 줄 설정
+                updateTextViewDecoration(taskTextView, completion)
+
+                item.completion = completion
+                dbHelper.updateTodoItem(item.id, item.date, item.task, completion)
             }
-            linearLayout.addView(todoView)
+
+
+            // 수정 버튼에 대한 클릭 리스너
+            btnEdit.setOnClickListener {
+                val editIntent = Intent(this, AddTodoActivity::class.java)
+                editIntent.putExtra("mode", "edit")
+                editIntent.putExtra("itemId", itemId)  // 수정할 아이템의 ID 전달
+                startActivity(editIntent)
+
+            }
+
+            // 삭제 버튼에 대한 클릭 리스너
+            btnDelete.setOnClickListener {
+                // 다이얼로그 생성
+                val alertDialog = AlertDialog.Builder(this)
+                    .setTitle("삭제 확인")
+                    .setMessage("이 할일 항목을 삭제하시겠습니까?")
+                    .setPositiveButton("확인") { _, _ ->
+                        // 사용자가 확인을 선택한 경우
+                        // 데이터베이스에서 해당 ID에 해당하는 항목 삭제
+                        dbHelper.deleteTodoItem(itemId)
+                        todoItems.remove(item)
+                        // 해당 뷰를 LinearLayout에서 제거
+                        linearLayout.removeView(todoView)
+                    }
+                    .setNegativeButton("취소") { _, _ ->
+                        // 아무 동작도 수행하지 않음
+                    }
+                    .create()
+
+                // 다이얼로그 표시
+                alertDialog.show()
+            }
+
+
+        }
+    }
+
+    // 체크 상태에 따라 가운데 줄 설정
+    private fun updateTextViewDecoration(textView: TextView, isCompleted: Boolean) {
+        if (isCompleted) {
+            // 체크된 경우 가운데 줄 추가
+            textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            // 체크가 해제된 경우 가운데 줄 제거
+            textView.paintFlags = 0
         }
     }
 
@@ -161,15 +207,16 @@ class TodoActivity : AppCompatActivity() {
             val todoView = linearLayout.getChildAt(i) as LinearLayout
             val checkBox = todoView.findViewById<CheckBox>(R.id.todo_CheckBox)
 
-            // 스위치 on && 체크 true면 숨기기
+            // 스위치 on이고 체크 true면 숨기기
             if (isSwitchChecked && checkBox.isChecked) {
                 todoView.visibility = View.GONE
             } else {
-                // 스위치가 off || 체크 false면 보이기
+                // 스위치가 off이거나 체크 false면 보이기
                 todoView.visibility = View.VISIBLE
             }
         }
     }
+}
 
 
 }
