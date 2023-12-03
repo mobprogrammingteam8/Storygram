@@ -14,7 +14,7 @@ class AddTodoActivity : Activity() {
     private lateinit var btnBack: Button
     private lateinit var btnOK: Button
     private lateinit var textTask : EditText
-    private val dbHelper = Todo_DBHelper(this)
+    private val dbHelper = TodoDBHelper(this)
     private var itemId: Int = -1
     private lateinit var existingItem: TodoItem
     private val selectedDate = Calendar.getInstance()
