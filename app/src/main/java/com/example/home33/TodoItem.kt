@@ -1,7 +1,5 @@
 package com.cookandroid.diary_recyclerview
 
-import java.time.LocalDate
-import java.util.Date
+data class TodoItem(var id : Int, var date : String, var task : String, var completion : Boolean)
 
-data class TodoItem(var date : String, var content : String, var isChecked : Boolean)
 
