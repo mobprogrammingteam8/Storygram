@@ -3,12 +3,8 @@ package com.cookandroid.diary_recyclerview
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.CalendarView
-import android.widget.DatePicker
 import android.widget.EditText
-import androidx.core.view.isVisible
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -18,22 +14,39 @@ class AddTodoActivity : Activity() {
     private lateinit var btnBack: Button
     private lateinit var btnOK: Button
     private lateinit var textTask : EditText
-    private lateinit var dbHelper: DBHelper
-
+    private val dbHelper = DBHelper(this)
+    private var itemId: Int = -1
+    private lateinit var existingItem: TodoItem
     private val selectedDate = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_todo)
 
-        /*dbHelper = DBHelper(this)*/
+
+        val mode = intent.getStringExtra("mode")
 
         dateButton = findViewById<Button>(R.id.todo_dateButton)
         btnBack = findViewById<Button>(R.id.todo_btnBack)
         btnOK = findViewById<Button>(R.id.todo_btnOK)
         textTask = findViewById<EditText>(R.id.todo_EditTextTask)
 
-        updateDateButton() //현재 날짜로 초기화
+        if (mode == "edit") {
+            itemId = intent.getIntExtra("itemId", -1)
+            existingItem = dbHelper.getTodoItemById(itemId)
+
+            // 기존 항목의 정보를 가져와서 UI에 반영
+            textTask.setText(existingItem.task)
+            selectedDate.time = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(existingItem.date)
+            val dateFormat = SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREA)
+            dateButton.text = dateFormat.format(selectedDate.time)
+        } else {
+            // 추가 모드인 경우 현재 날짜로 초기화
+            updateDateButton()
+        }
+
+
+
 
         // dateButton 클릭 시 DatePickerDialog 표시
         dateButton.setOnClickListener {
@@ -46,15 +59,20 @@ class AddTodoActivity : Activity() {
         }
 
         //확인 클릭 시 데이터베이스에 날짜, 할 일 내용 저장
-        /*btnOK.setOnClickListener{
+        btnOK.setOnClickListener{
             // 날짜 및 할 일 내용 가져오기
-            val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
+            val dueDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
             val todoTask = textTask.text.toString()  // EditText의 내용 가져오기
 
-            // 데이터베이스에 저장
-            dbHelper.insertTodoItem(currentDate, todoTask)
-
-        }*/
+            // 수정 모드일 경우, 해당 아이템 업데이트
+            if (mode == "edit") {
+                dbHelper.updateTodoItem(itemId, dueDate, todoTask, existingItem.completion)
+            } else {
+                // 추가 모드일 경우, 새로운 아이템 추가
+                dbHelper.insertTodoItem(dueDate, todoTask, false)
+            }
+            finish()
+        }
     }
 
 
