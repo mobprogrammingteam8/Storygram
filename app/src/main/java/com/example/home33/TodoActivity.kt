@@ -22,7 +22,7 @@ class TodoActivity : AppCompatActivity() {
     private lateinit var btnAdd: ImageView
     private lateinit var completedSwitch : Switch
 
-    private val dbHelper = DBHelper(this)
+    private val dbHelper = Todo_DBHelper(this)
 
     private val binding: TodoActivityMainBinding by lazy { TodoActivityMainBinding.inflate(layoutInflater) }
 
