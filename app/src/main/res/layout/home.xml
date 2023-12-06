@@ -15,52 +15,51 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/dateTextView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2023/05/05"
-                android:textColor="#FF9090"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tagsTextView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="#어쩌구 #저쩌구"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/contentTextView1"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tagsTextView1"
-                android:layout_marginTop="-1dp"
-                android:text="나는 오늘 잠을 잤다"
-                android:textSize="18sp" />
+                android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/photoImageView1"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/contentTextView1"
-                android:layout_marginTop="2dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_default_photo" />
+                <TextView
+                    android:id="@+id/dateTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023/05/05"
+                    android:textColor="#FF9090"
+                    android:textSize="15sp" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tagsTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="#어쩌구 #저쩌구"
+                    android:textSize="16sp" />
 
+                <TextView
+                    android:id="@+id/contentTextView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tagsTextView1"
+                    android:layout_marginTop="-1dp"
+                    android:text="나는 오늘 잠을 잤다"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/photoImageView1"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_below="@id/contentTextView1"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_default_photo" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="1dp">
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/dateTextView2"
@@ -74,8 +73,8 @@
                     android:id="@+id/tagsTextView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tagsTextView2"
-                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/dateTextView2"
+                    android:layout_marginTop="-1dp"
                     android:text="#어쩌구 #저쩌구"
                     android:textSize="16sp" />
 
@@ -90,12 +89,20 @@
 
                 <ImageView
                     android:id="@+id/photoImageView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_below="@id/contentTextView2"
                     android:layout_marginTop="2dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_photo" />
+
+                <TextView
+                    android:id="@+id/dateTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023/05/05"
+                    android:textColor="#FF9090"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -116,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dateTextView3"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="3dp"
                     android:text="#어쩌구 #저쩌구"
                     android:textSize="16sp" />
 
@@ -131,12 +138,20 @@
 
                 <ImageView
                     android:id="@+id/photoImageView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_below="@id/contentTextView3"
                     android:layout_marginTop="2dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_photo" />
+
+                <TextView
+                    android:id="@+id/dateTextView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023/05/05"
+                    android:textColor="#FF9090"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -157,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dateTextView4"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="3dp"
                     android:text="#어쩌구 #저쩌구"
                     android:textSize="16sp" />
 
@@ -172,12 +187,20 @@
 
                 <ImageView
                     android:id="@+id/photoImageView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_below="@id/contentTextView4"
                     android:layout_marginTop="2dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_photo" />
+
+                <TextView
+                    android:id="@+id/dateTextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023/05/05"
+                    android:textColor="#FF9090"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -198,7 +221,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dateTextView5"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="3dp"
                     android:text="#어쩌구 #저쩌구"
                     android:textSize="16sp" />
 
@@ -213,12 +236,20 @@
 
                 <ImageView
                     android:id="@+id/photoImageView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_below="@id/contentTextView5"
                     android:layout_marginTop="2dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_photo" />
+
+                <TextView
+                    android:id="@+id/dateTextView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023/05/05"
+                    android:textColor="#FF9090"
+                    android:textSize="15sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
@@ -301,7 +332,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/dateTextView"
+            android:id="@+id/DateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
