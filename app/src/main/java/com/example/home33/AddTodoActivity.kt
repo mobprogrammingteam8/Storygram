@@ -2,6 +2,7 @@ package com.cookandroid.diary_recyclerview
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -67,9 +68,12 @@ class AddTodoActivity : Activity() {
             // 수정 모드일 경우, 해당 아이템 업데이트
             if (mode == "edit") {
                 dbHelper.updateTodoItem(itemId, dueDate, todoTask, existingItem.completion)
-            } else {
+            } else if (mode == "add"){
                 // 추가 모드일 경우, 새로운 아이템 추가
-                dbHelper.insertTodoItem(dueDate, todoTask, false)
+                val newTodoItemId = dbHelper.insertTodoItem(dueDate, todoTask, false)
+                val resultIntent = Intent()
+                resultIntent.putExtra("newTodoItemId", newTodoItemId.toInt())
+                setResult(Activity.RESULT_OK, resultIntent)
             }
             finish()
         }
