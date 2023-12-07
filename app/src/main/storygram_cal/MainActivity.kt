@@ -5,6 +5,9 @@ import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -19,6 +22,17 @@ class MainActivity : AppCompatActivity() {
 
         val materialCalendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
         val dateTextView = findViewById<TextView>(R.id.dateTextView) // 선택한 날짜를 표시할 TextView
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val menuButton = findViewById<ImageButton>(R.id.menuButton)
+
+
+        menuButton.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
 
         materialCalendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_MULTIPLE
 
