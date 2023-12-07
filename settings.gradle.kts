@@ -3,6 +3,9 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url = uri("https://dl.bintray.com/greenfrvr/maven/")
+        }
     }
 }
 dependencyResolutionManagement {
