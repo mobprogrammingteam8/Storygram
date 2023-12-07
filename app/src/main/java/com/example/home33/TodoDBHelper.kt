@@ -17,6 +17,7 @@ class TodoDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 
         private const val COLUMN_TASK = "text"
         private const val COLUMN_COMPLETED = "completion"
     }
+
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             "CREATE TABLE IF NOT EXISTS $TABLE_NAME (" +
@@ -24,7 +25,6 @@ class TodoDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 
                     "$COLUMN_DATE TEXT NOT NULL," +
                     "$COLUMN_TASK TEXT NOT NULL," +
                     "$COLUMN_COMPLETED INTEGER NOT NULL)"
-
         )
     }
 
@@ -34,16 +34,18 @@ class TodoDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 
     }
 
 
-    fun insertTodoItem(date: String, task: String, completion: Boolean = false) {
+    fun insertTodoItem(date: String, task: String, completion: Boolean = false) :Long {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_DATE, date)
             put(COLUMN_TASK, task)
             put(COLUMN_COMPLETED, if (completion) 1 else 0)
         }
+        // insert 메서드가 반환하는 값을 반환 (행의 ID)
+        val newTodoItemId = db.insert(TABLE_NAME, null, values)
 
-        db.insert(TABLE_NAME, null, values)
-        db.close()
+        db.close()  // 데이터베이스 연결 닫기
+        return newTodoItemId
     }
 
     fun deleteTodoItem(itemId: Int) {
