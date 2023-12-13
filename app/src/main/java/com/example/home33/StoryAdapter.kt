@@ -65,8 +65,8 @@ class StoryAdapter(val storyList: ArrayList<StoryItem>, val context: Context) : 
         } catch (e: Exception) {
             Log.d("userimage", "user-image 파일 로드 실패")
         }
-        holder.feed.setImageResource(R.drawable.feed2)
-        holder.userimage.setImageResource(R.mipmap.ic_launcher_round)
+        //holder.feed.setImageResource(R.drawable.feed2)
+        //holder.userimage.setImageResource(R.mipmap.ic_launcher_round)
         holder.content.text = storyList.get(position).content
         holder.date.text = storyList.get(position).date
         var tags = storyList.get(position).tag
